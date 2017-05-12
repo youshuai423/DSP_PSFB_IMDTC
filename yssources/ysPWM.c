@@ -79,18 +79,20 @@ void InitPWM()
 	EPwm3Regs.TBCTL.bit.PHSEN = TB_ENABLE;
 
 	EPwm3Regs.CMPA.half.CMPA = 0; // duty_cycle = 0.5
-	EPwm3Regs.CMPB = halfperiod * 0.5;
+	EPwm3Regs.CMPB = 0;
 	EPwm3Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
 	EPwm3Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
 	EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;  // TBCTR = 0时装载
 	EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
 
-	EPwm4Regs.AQCTLA.bit.CAU = AQ_SET;
+	EPwm4Regs.AQCTLA.bit.CAU = AQ_CLEAR;
 	EPwm4Regs.AQCTLA.bit.CAD = AQ_CLEAR;
+	EPwm4Regs.AQCTLB.bit.CBU = AQ_CLEAR;
+	EPwm4Regs.AQCTLB.bit.CBD = AQ_CLEAR;
 
 	EPwm3Regs.DBCTL.bit.IN_MODE = DBA_ALL;
 	EPwm3Regs.DBCTL.bit.POLSEL = DB_ACTV_HIC;  // A不翻转，B翻转
-	EPwm3Regs.DBCTL.bit.OUT_MODE = DB_FULL_ENABLE;
+	EPwm3Regs.DBCTL.bit.OUT_MODE = DB_DISABLE;
 	EPwm3Regs.DBRED = DeadZone; // Deadzone
 	EPwm3Regs.DBFED = DeadZone;
 

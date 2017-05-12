@@ -15,7 +15,7 @@ Uint16 sector = 0;  // SVM扇区
 |----------------------------------------------------------------------------*/
 /* 观测值 */
   // 电压
-double Ud = 0;
+double Udc_IN = 0;
 PHASE_ABC uabc = {0, 0, 0};
 PHASE_ALBE ualbe = {0, 0};
 PHASE_DQ udq = {0, 0};
@@ -51,7 +51,7 @@ double spd_cmd = 0;  // 转速给定
 double spd_req = 500;  // 转速设定
 
 /* PI 变量 */
-double Kp_Tecmd = 0.05;
+double Kp_Tecmd = 0.02;
 double Ki_Tecmd = 1;
 double intgrt_Tecmd = 0;
 

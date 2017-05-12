@@ -7,7 +7,7 @@
 | local variable definitions
 |----------------------------------------------------------------------------*/
 int code_start = 0;
-double mSample[4];
+double mSample[5];
 int indexDA = 3;
 Uint32 spd_reg = 0;
 int index_lambdas = 0;
@@ -15,20 +15,20 @@ int index_Te = 0;
 int index_column = 0;
 int index_row = 0;
 int vector = 0;
-int SwitchTable[6][6] = {
-	5, 6, 1, 2, 3, 4,
-	0, 7, 0, 7, 0, 7,
-	3, 4, 5, 6, 1, 2,
-	6, 1, 2, 3, 4, 5,
-	7, 0, 7, 0, 7, 0,
-	2, 3, 4, 5, 6, 1
-};
-//int SwitchTable[4][6] = {
+//int SwitchTable[6][6] = {
+//	5, 6, 1, 2, 3, 4,
 //	0, 7, 0, 7, 0, 7,
 //	3, 4, 5, 6, 1, 2,
+//	6, 1, 2, 3, 4, 5,
 //	7, 0, 7, 0, 7, 0,
 //	2, 3, 4, 5, 6, 1
 //};
+int SwitchTable[4][6] = {
+	0, 7, 0, 7, 0, 7,
+	3, 4, 5, 6, 1, 2,
+	7, 0, 7, 0, 7, 0,
+	2, 3, 4, 5, 6, 1
+};
 int switchstate[3][8] = {
 	0, 1, 1, 0, 0, 0, 1, 1,
 	0, 0, 1, 1, 1, 0, 0, 1,
@@ -94,15 +94,16 @@ interrupt void epwm1_timer_isr(void)
     EPwm1Regs.ETCLR.bit.INT = 1;
 
 	// ----------------电压电流采样---------------------
-	ParallelRD(mSample, 4);
+	ParallelRD(mSample, 5);
 	iabc.a = LPfilter1(mSample[0] * HallRatioIa, iabc.a, wc_sample, Ts);
-	Ud = LPfilter1(mSample[1] * HallRatioVg, Ud, wc_sample, Ts);  // 采样方向和正方向相同
+	//Ug = LPfilter1(mSample[1] * HallRatioVg, Ug, wc_sample, Ts);  // 采样方向和正方向相同
 	iabc.b = LPfilter1(mSample[2] * HallRatioIb, iabc.b, wc_sample, Ts);
 	//Ig = LPfilter1(mSample[3] * HallRatioIg, Ig, wc_sample, Ts);
+	Udc_IN = LPfilter1(mSample[4] * HallRatioVg, Udc_IN, wc_sample, Ts);
 	iabc.c = - iabc.b - iabc.a;  // ??合不合适
-   	uabc.a = 2.52 * Ud * (Dabc.a - 0.5);  // 2.52 = (1 - Phasft / 180) * 3
-   	uabc.b = 2.52 * Ud * (Dabc.b - 0.5);
-   	uabc.c = 2.52 * Ud * (Dabc.c - 0.5);
+   	uabc.a = 2.52 * (Udc_IN - 2) * (Dabc.a - 0.5);  // 2.52 = (1 - Phasft / 180) * 3
+   	uabc.b = 2.52 * (Udc_IN - 2) * (Dabc.b - 0.5);
+   	uabc.c = 2.52 * (Udc_IN - 2) * (Dabc.c - 0.5);
 
 //   	double cosIn = cos(theta);
 //    double sinIn = sin(theta);
@@ -152,15 +153,15 @@ interrupt void epwm1_timer_isr(void)
 
 	/* Relay */
 	index_lambdas = Relay_2Level(lambdas_cmd - lambdas, band_lambdas, -band_lambdas, index_lambdas);
-	//index_Te = Relay_3Level(Te_cmd - Te, band_Te, -band_Te, index_Te);
+	//index_Te = Relay_3Level(Te_cmd - Te, band_Te, -band_Te, index_Te);  // =============
 	index_Te = Relay_2Level(Te_cmd - Te, band_Te, -band_Te, index_Te);
 
 	/* Switchstate selection */
-	index_row = (int)(1.5*index_lambdas + index_Te + 2.5);
-	//index_row = (int)(index_lambdas + 0.5 * index_Te + 1.5);
+	//index_row = (int)(1.5*index_lambdas + index_Te + 2.5); // ==============
+	index_row = (int)(index_lambdas + 0.5 * index_Te + 1.5);
 	index_column = sector2(lambdasalbe.al, lambdasalbe.be) - 1;
-	if (index_row >= 0 && index_row <= 5 && index_column >= 0 && index_column <= 5)
-	//if (index_row >= 0 && index_row <= 3 && index_column >= 0 && index_column <= 5)
+	//if (index_row >= 0 && index_row <= 5 && index_column >= 0 && index_column <= 5)  // ================
+	if (index_row >= 0 && index_row <= 3 && index_column >= 0 && index_column <= 5)
 	{
 		vector = SwitchTable[index_row][index_column];
 		Dabc.a = switchstate[0][vector];

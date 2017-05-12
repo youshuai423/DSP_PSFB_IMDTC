@@ -80,7 +80,7 @@ typedef struct
 |----------------------------------------------------------------------------*/
 /* π€≤‚÷µ */
   // µÁ—π
-extern double Ud;
+extern double Udc_IN;
 extern PHASE_ABC uabc;
 extern PHASE_ALBE ualbe;
 extern PHASE_DQ udq;
