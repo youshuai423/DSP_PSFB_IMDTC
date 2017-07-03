@@ -123,26 +123,26 @@ interrupt void epwm1_timer_isr(void)
 	S3toS2(uabc, &ualbe);
 
 	/* Torque and stator flux calculation */
-	//lambdasalbeCal(ualbe, ialbe, &lambdasalbe);
-	// 改进积分
-	lambdastemp1.al = LPfilter2(ualbe.al - Rs * ialbe.al, lambdastemp1.al, wc_lambdascal, Ts);
-	lambdastemp1.be = LPfilter2(ualbe.be - Rs * ialbe.be, lambdastemp1.be, wc_lambdascal, Ts);
-	if(lambdas == 0)
-	{
-		cosphi = 1; sinphi = 0;
-	}
-	else
-	{
-		temp = 1 / lambdas;
-		cosphi = lambdasalbe.al * temp;
-		sinphi = lambdasalbe.be * temp;
-	}
-	if(lambdas > lambdas_cmd)  Amplambdas = lambdas_cmd;
-	else  Amplambdas = lambdas;
-	lambdastemp2.al = LPfilter1(Amplambdas * cosphi, lambdastemp2.al, wc_lambdascal, Ts);
-	lambdastemp2.be = LPfilter1(Amplambdas * sinphi, lambdastemp2.be, wc_lambdascal, Ts);
-	lambdasalbe.al = lambdastemp1.al + lambdastemp2.al;  // 先加还是后加？
-	lambdasalbe.be = lambdastemp1.be + lambdastemp2.be;
+	lambdasalbeCal(ualbe, ialbe, &lambdasalbe);
+//	// 改进积分
+//	lambdastemp1.al = LPfilter2(ualbe.al - Rs * ialbe.al, lambdastemp1.al, wc_lambdascal, Ts);
+//	lambdastemp1.be = LPfilter2(ualbe.be - Rs * ialbe.be, lambdastemp1.be, wc_lambdascal, Ts);
+//	if(lambdas == 0)
+//	{
+//		cosphi = 1; sinphi = 0;
+//	}
+//	else
+//	{
+//		temp = 1 / lambdas;
+//		cosphi = lambdasalbe.al * temp;
+//		sinphi = lambdasalbe.be * temp;
+//	}
+//	if(lambdas > lambdas_cmd)  Amplambdas = lambdas_cmd;
+//	else  Amplambdas = lambdas;
+//	lambdastemp2.al = LPfilter1(Amplambdas * cosphi, lambdastemp2.al, wc_lambdascal, Ts);
+//	lambdastemp2.be = LPfilter1(Amplambdas * sinphi, lambdastemp2.be, wc_lambdascal, Ts);
+//	lambdasalbe.al = lambdastemp1.al + lambdastemp2.al;  // 先加还是后加？
+//	lambdasalbe.be = lambdastemp1.be + lambdastemp2.be;
 
 	lambdas = sqrt(lambdasalbe.al * lambdasalbe.al + lambdasalbe.be * lambdasalbe.be);
 

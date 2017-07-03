@@ -41,7 +41,7 @@ PHASE_DQ udq_cmd = {0, 0};
   // 电流
 PHASE_DQ idq_cmd = {0, 0};
   // 磁链
-double lambdas_cmd = 0.5;
+double lambdas_cmd = 0.6;
   // 转矩
 double Te_cmd = 0;
   // 占空比
