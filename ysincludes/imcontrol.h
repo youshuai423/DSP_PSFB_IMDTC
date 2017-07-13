@@ -10,12 +10,14 @@
 | defines
 |----------------------------------------------------------------------------*/
 /* IM parameters */
-#define Rs 4.6  //4.4717
-#define Ls 0.289368
-#define Rr 3.3278
-#define Lr 0.289368
-#define Lm 0.27325
-#define Tr 0.0869557
+#define Rs 5  //4.4717
+#define Rr 3.1407
+#define Lm 0.42735
+#define Lls 0.0173
+#define Ls 0.44465
+#define Llr 0.0173
+#define Lr 0.44465
+#define Tr 0.1415767
 #define np 2
 
 /* control period */
@@ -32,7 +34,7 @@
 #define Tecmdlimit_L -5
 
 /* speed ramp */
-#define spdramp 100  // 斜率
+#define spdramp 200  // 斜率
 #define spdlimit_H 1000  // 转速上限
 #define spdlimit_L 0  // 转速下限
 
@@ -45,7 +47,6 @@
 /* DTC */
 #define band_lambdas 0.02
 #define band_Te 0.05
-
 
 //#define VSpdramp 0.38386  // 斜率
 #define VSpdramp 0.17  // 斜率
@@ -90,6 +91,7 @@ extern PHASE_ALBE ialbe;
 extern PHASE_DQ idq;
   // 磁链
 extern double lambdar;
+extern PHASE_ALBE lambdaralbe;
 extern double lambdas;  // lambdas^2
 extern PHASE_ALBE lambdasalbe;
 extern double theta;
@@ -97,6 +99,7 @@ extern double theta;
 extern double Te;
   // 转速
 extern double speed;
+extern double wr;
 
 /* 给定值 */
   // 电压
@@ -139,14 +142,12 @@ extern void S2toS3(PHASE_ALBE albe, PHASE_ABC *abc);
 extern void R2toS2(PHASE_DQ dq, PHASE_ALBE *albe, double cosIn, double sinIn);
 
 /* calculate lamdar */  
-extern double lambdarCal(double lambdar, double ism);
+extern double lambdar_cal(double lambdar, double ism);
+extern void lambdaralbe_cal(PHASE_ALBE ialbe, PHASE_ALBE *lambdaralbe, double wr);
 
 /* calculate lamdar */
-extern void lambdasalbeCal(PHASE_ALBE ualbe, PHASE_ALBE ialbe, PHASE_ALBE *lambdasalbe);
-
-/* calculate position and speed */  
-extern double wrCal_M();
-extern double positonCal(double wr, double lambdar, double ist, double theta);
+extern void lambdasalbe_voltage(PHASE_ALBE ualbe, PHASE_ALBE ialbe, PHASE_ALBE *lambdasalbe);
+extern void lambdasalbe_current(PHASE_ALBE lambdaralbe, PHASE_ALBE *lambdasalbe, PHASE_ALBE ialbe);
 
 /* PI module */  
 extern double PImodule(double Kp, double Ki, double err, double *intgrt, double Uplim, double Downlim, double _Ts);

@@ -25,6 +25,7 @@ PHASE_ALBE ialbe = {0, 0};
 PHASE_DQ idq = {0, 0};
   // 磁链
 double lambdar = 0;
+PHASE_ALBE lambdaralbe = {0, 0};
 double lambdas = 0;
 PHASE_ALBE lambdasalbe = {0, 0};
 double theta = 0;
@@ -32,6 +33,7 @@ double theta = 0;
 double Te = 0;
   // 转速
 double speed = 0;
+double wr = 0;
 
 /* 给定值 */
   // 电压
@@ -158,51 +160,37 @@ void R2toS2(PHASE_DQ dq, PHASE_ALBE *albe, double cosIn, double sinIn)
 @brief   Rotor Flux Calculation
 ******************************************************************************/
 /* calculate lamdar */  
-double lambdarCal(double lambdar, double ism)
+double lambdar_cal(double lambdar, double ism)
 {
   return (1.0 - Ts/Tr) * lambdar + Lm*Ts/Tr * ism;
 }
 
-void lambdaralbeCal(PHASE_ALBE ualbe, PHASE_ALBE ialbe, double *ualsum, double *ubesum, double *ialsum, double *ibesum, PHASE_ALBE *lambdaralbe)
+void lambdaralbe_cal(PHASE_ALBE ialbe, PHASE_ALBE *lambdaralbe, double wr)
 {
-  double tempal, tempbe;
-  tempal = Integrator(ualbe.al, *ualsum, Ts) - Rs * Integrator(ialbe.al, *ialsum, Ts) - (Ls*Lr/Lm - Lm) * ialbe.al;
-  tempbe = Integrator(ualbe.be, *ubesum, Ts) - Rs * Integrator(ialbe.be, *ibesum, Ts) - (Ls*Lr/Lm - Lm) * ialbe.be;
-  lambdaralbe->al = tempal * Lr/Lm;
-  lambdaralbe->be = tempbe * Lr/Lm;
+	// 3.531654573104190e-04 = Ts / Tr
+	double tempal = 0, tempbe = 0;
+	tempal = Lm * (ialbe.al) - wr * Tr * (lambdaralbe->be);
+	tempbe = Lm * (ialbe.be) + wr * Tr * (lambdaralbe->al);
+	lambdaralbe->al = (lambdaralbe->al + 3.531654573104190e-04 * tempal) / (1 + 3.531654573104190e-04);
+	lambdaralbe->be = (lambdaralbe->be + 3.531654573104190e-04 * tempbe) / (1 + 3.531654573104190e-04);
 }
 
 /******************************************************************************
 @brief   Stator Flux Calculation
 ******************************************************************************/
-void lambdasalbeCal(PHASE_ALBE ualbe, PHASE_ALBE ialbe, PHASE_ALBE *lambdasalbe)
+void lambdasalbe_voltage(PHASE_ALBE ualbe, PHASE_ALBE ialbe, PHASE_ALBE *lambdasalbe)
 {
 	lambdasalbe->al = LPfilter2(ualbe.al - Rs * ialbe.al, lambdasalbe->al, 1, Ts);
 	lambdasalbe->be = LPfilter2(ualbe.be - Rs * ialbe.be, lambdasalbe->be, 1, Ts);
 	//lambdasalbe->al = Integrator(ualbe.al - Rs * ialbe.al, lambdasalbe->al, Ts);
 	//lambdasalbe->be = Integrator(ualbe.be - Rs * ialbe.be, lambdasalbe->be, Ts);
 }
-
-/******************************************************************************
-@brief   Calculate Position and Speed 
-******************************************************************************/
-double wrCal_M()
+void lambdasalbe_current(PHASE_ALBE lambdaralbe, PHASE_ALBE *lambdasalbe, PHASE_ALBE ialbe)
 {
-  //unsigned int temp;
-  //return 60.0 * (cntFTM1 - temp) / (Z * 0.001);
+	// 0.033926908804678 = (Ls - Lm*Lm/Lr), 0.961092994490048 = Lm / Lr;
+	lambdasalbe->al = 0.033926908804678 * ialbe.al + 0.961092994490048 * lambdaralbe.al;
+	lambdasalbe->be = 0.033926908804678 * ialbe.be + 0.961092994490048 * lambdaralbe.be;
 }
-
-double positonCal(double wr, double lamdar, double ist, double theta)
-{
-  double we = 0;  
-  
-  if (lamdar > 0.01)
-    we = Lm/Tr * ist / lamdar + wr;
-  else
-    we = 0;
-  
-  return Integrator(we, theta, Ts);
-} 
 
 /******************************************************************************
 @brief   PI Module 

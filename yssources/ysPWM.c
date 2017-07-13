@@ -70,7 +70,7 @@ void InitPWM()
 
 	/* ======== 4th Leg ======== */
 	// ----------------EPwm3---------------------
-	EPwm3Regs.TBPHS.half.TBPHS = 0.4 * PhaSft;;  // 时基周期寄存器
+	EPwm3Regs.TBPHS.half.TBPHS = 0.6 * PhaSft;;  // 时基周期寄存器
 	EPwm3Regs.TBCTR = 0;  // 时基计数寄存器置零
 	EPwm3Regs.TBCTL.bit.PHSDIR = TB_DOWN;
 	EPwm3Regs.TBCTL.bit.CLKDIV = prediv;  // 时钟预分频
@@ -98,7 +98,7 @@ void InitPWM()
 
 	/* ======== 1-3 Leg ======== */
 	// ----------------EPwm4---------------------
-	EPwm4Regs.TBPHS.half.TBPHS = 0.4 * PhaSft;  // 时基周期寄存器
+	EPwm4Regs.TBPHS.half.TBPHS = 0.6 * PhaSft;  // 时基周期寄存器
 	EPwm4Regs.TBCTR = 0;  // 时基计数寄存器置零
 	EPwm4Regs.TBCTL.bit.PHSDIR = TB_DOWN;
 	EPwm4Regs.TBCTL.bit.CLKDIV = prediv;  // 时钟预分频
@@ -123,7 +123,7 @@ void InitPWM()
 	EPwm4Regs.DBFED = DeadZone;
 
 	// ----------------EPwm5---------------------
-	EPwm5Regs.TBPHS.half.TBPHS = 0.4 * PhaSft;  // 时基周期寄存器
+	EPwm5Regs.TBPHS.half.TBPHS = 0.6 * PhaSft;  // 时基周期寄存器
 	EPwm5Regs.TBCTR = 0;  // 时基计数寄存器置零
 	EPwm5Regs.TBCTL.bit.PHSDIR = TB_DOWN;
 	EPwm5Regs.TBCTL.bit.CLKDIV = prediv;  // 时钟预分频
@@ -148,7 +148,7 @@ void InitPWM()
 	EPwm5Regs.DBFED = DeadZone;
 
 	// ----------------EPwm6---------------------
-	EPwm6Regs.TBPHS.half.TBPHS = 0.4 * PhaSft;  // 时基周期寄存器
+	EPwm6Regs.TBPHS.half.TBPHS = 0.6 * PhaSft;  // 时基周期寄存器
 	EPwm6Regs.TBCTR = 0;  // 时基计数寄存器置零
 	EPwm6Regs.TBCTL.bit.PHSDIR = TB_DOWN;
 	EPwm6Regs.TBCTL.bit.CLKDIV = prediv;  // 时钟预分频

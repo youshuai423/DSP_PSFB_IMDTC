@@ -36,6 +36,7 @@ int switchstate[3][8] = {
 };
 PHASE_ALBE lambdastemp1 = {0, 0};
 PHASE_ALBE lambdastemp2 = {0, 0};
+PHASE_ALBE lambdasalbe_c = {0, 0};
 
 /******************************************************************************
 @brief  Main
@@ -123,8 +124,9 @@ interrupt void epwm1_timer_isr(void)
 	S3toS2(uabc, &ualbe);
 
 	/* Torque and stator flux calculation */
-	lambdasalbeCal(ualbe, ialbe, &lambdasalbe);
-//	// 改进积分
+	// 1. 低通滤波
+	//lambdasalbeCal(ualbe, ialbe, &lambdasalbe);
+	// 2. 改进积分
 //	lambdastemp1.al = LPfilter2(ualbe.al - Rs * ialbe.al, lambdastemp1.al, wc_lambdascal, Ts);
 //	lambdastemp1.be = LPfilter2(ualbe.be - Rs * ialbe.be, lambdastemp1.be, wc_lambdascal, Ts);
 //	if(lambdas == 0)
@@ -143,6 +145,10 @@ interrupt void epwm1_timer_isr(void)
 //	lambdastemp2.be = LPfilter1(Amplambdas * sinphi, lambdastemp2.be, wc_lambdascal, Ts);
 //	lambdasalbe.al = lambdastemp1.al + lambdastemp2.al;  // 先加还是后加？
 //	lambdasalbe.be = lambdastemp1.be + lambdastemp2.be;
+
+	// 3.电流型磁链观测器
+	lambdaralbe_cal(ialbe, &lambdaralbe, wr);
+	lambdasalbe_current(lambdaralbe, &lambdasalbe, ialbe);
 
 	lambdas = sqrt(lambdasalbe.al * lambdasalbe.al + lambdasalbe.be * lambdasalbe.be);
 
@@ -209,7 +215,15 @@ interrupt void epwm1_timer_isr(void)
 		}
 		case 6:
 		{
-			DACout(0, (speed - 400) * 0.03); DACout(2, Te);break;
+			DACout(0, (speed) * 0.009); DACout(2, Te);break;
+		}
+		case 7:
+		{
+			DACout(0, lambdasalbe.al * 5); DACout(2, lambdasalbe_c.al * 5);break;
+		}
+		case 8:
+		{
+			DACout(0, lambdasalbe.be * 5); DACout(2, lambdasalbe_c.be * 5);break;
 		}
 		default:
 		{
@@ -238,6 +252,8 @@ interrupt void ISRTimer0(void)
 	}
 	else
 		speed = ((int)EQep1Regs.QPOSCNT - (int)spd_reg) * 1.2;
+
+	wr = speed * 0.209439510239320;  // wr = speed / 60 * 2*pi * 2;
 
 	spd_reg = EQep1Regs.QPOSCNT;
 
