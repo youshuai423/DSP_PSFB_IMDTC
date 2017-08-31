@@ -22,6 +22,7 @@ void InitPWM()
 	EPwm1Regs.TBCTL.bit.HSPCLKDIV = 0;
 	EPwm1Regs.TBCTL.bit.SYNCOSEL = TB_CTR_ZERO;
 	EPwm1Regs.TBCTL.bit.PHSEN = TB_ENABLE;
+	EPwm1Regs.TBCTL.bit.FREE_SOFT = 3;
 
 	EPwm1Regs.CMPA.half.CMPA = 0; // duty_cycle = 0.5
 	EPwm1Regs.CMPB = DABperiod * 0.5;
@@ -51,6 +52,7 @@ void InitPWM()
 	EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0;
 	EPwm2Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_IN;
 	EPwm2Regs.TBCTL.bit.PHSEN = TB_ENABLE;
+	EPwm2Regs.TBCTL.bit.FREE_SOFT = 3;
 
 	EPwm2Regs.CMPA.half.CMPA = PhaSft; // duty_cycle = 0.5
 	EPwm2Regs.CMPB = DABperiod * 0.5 + PhaSft;
@@ -70,13 +72,14 @@ void InitPWM()
 
 	/* ======== 4th Leg ======== */
 	// ----------------EPwm3---------------------
-	EPwm3Regs.TBPHS.half.TBPHS = 0.6 * PhaSft;;  // 时基周期寄存器
+	EPwm3Regs.TBPHS.half.TBPHS = 0.6 * PhaSft;  // 时基周期寄存器
 	EPwm3Regs.TBCTR = 0;  // 时基计数寄存器置零
 	EPwm3Regs.TBCTL.bit.PHSDIR = TB_DOWN;
 	EPwm3Regs.TBCTL.bit.CLKDIV = prediv;  // 时钟预分频
 	EPwm3Regs.TBCTL.bit.HSPCLKDIV = 0;
 	EPwm3Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_IN;
 	EPwm3Regs.TBCTL.bit.PHSEN = TB_ENABLE;
+	EPwm3Regs.TBCTL.bit.FREE_SOFT = 3;
 
 	EPwm3Regs.CMPA.half.CMPA = 0; // duty_cycle = 0.5
 	EPwm3Regs.CMPB = 0;
@@ -85,10 +88,10 @@ void InitPWM()
 	EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;  // TBCTR = 0时装载
 	EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
 
-	EPwm4Regs.AQCTLA.bit.CAU = AQ_CLEAR;
-	EPwm4Regs.AQCTLA.bit.CAD = AQ_CLEAR;
-	EPwm4Regs.AQCTLB.bit.CBU = AQ_CLEAR;
-	EPwm4Regs.AQCTLB.bit.CBD = AQ_CLEAR;
+	EPwm3Regs.AQCTLA.bit.CAU = AQ_CLEAR;
+	EPwm3Regs.AQCTLA.bit.CAD = AQ_CLEAR;
+	EPwm3Regs.AQCTLB.bit.CBU = AQ_CLEAR;
+	EPwm3Regs.AQCTLB.bit.CBD = AQ_CLEAR;
 
 	EPwm3Regs.DBCTL.bit.IN_MODE = DBA_ALL;
 	EPwm3Regs.DBCTL.bit.POLSEL = DB_ACTV_HIC;  // A不翻转，B翻转
@@ -105,6 +108,7 @@ void InitPWM()
 	EPwm4Regs.TBCTL.bit.HSPCLKDIV = 0;
 	EPwm4Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_IN;
 	EPwm4Regs.TBCTL.bit.PHSEN = TB_ENABLE;
+	EPwm4Regs.TBCTL.bit.FREE_SOFT = 3;
 
 	EPwm4Regs.CMPA.half.CMPA = 0; // duty_cycle = 0.5
 	EPwm4Regs.CMPB = 0;
@@ -130,6 +134,7 @@ void InitPWM()
 	EPwm5Regs.TBCTL.bit.HSPCLKDIV = 0;
 	EPwm5Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_IN;
 	EPwm5Regs.TBCTL.bit.PHSEN = TB_ENABLE;
+	EPwm5Regs.TBCTL.bit.FREE_SOFT = 3;
 
 	EPwm5Regs.CMPA.half.CMPA = 0; // duty_cycle = 0.5
 	EPwm5Regs.CMPB = 0;
@@ -155,6 +160,7 @@ void InitPWM()
 	EPwm6Regs.TBCTL.bit.HSPCLKDIV = 0;
 	EPwm6Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_IN;
 	EPwm6Regs.TBCTL.bit.PHSEN = TB_ENABLE;
+	EPwm6Regs.TBCTL.bit.FREE_SOFT = 3;
 
 	EPwm6Regs.CMPA.half.CMPA = 0; // duty_cycle = 0.5
 	EPwm6Regs.CMPB = 0;

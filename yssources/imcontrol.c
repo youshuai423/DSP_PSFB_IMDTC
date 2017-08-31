@@ -43,7 +43,7 @@ PHASE_DQ udq_cmd = {0, 0};
   // 电流
 PHASE_DQ idq_cmd = {0, 0};
   // 磁链
-double lambdas_cmd = 0.6;
+double lambdas_cmd = 0.8;
   // 转矩
 double Te_cmd = 0;
   // 占空比
@@ -53,7 +53,7 @@ double spd_cmd = 0;  // 转速给定
 double spd_req = 500;  // 转速设定
 
 /* PI 变量 */
-double Kp_Tecmd = 0.02;
+double Kp_Tecmd = 0.01;
 double Ki_Tecmd = 1;
 double intgrt_Tecmd = 0;
 

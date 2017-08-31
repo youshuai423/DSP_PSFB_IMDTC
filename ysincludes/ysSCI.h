@@ -15,11 +15,14 @@
 /******************************************************************************
 | local functions prototypes
 |----------------------------------------------------------------------------*/
-int sciSend(int a);
 
 /******************************************************************************
 | exported functions
 |----------------------------------------------------------------------------*/
-void InitSCI();
-void sciString(char * msg);
-void sciNumber(int msg[]);
+extern void InitSCIB();
+extern int scib_tx(int a);
+extern void scib_str_tx(char *msg);
+extern void scib_num_tx(int msg[]);
+extern int scib_rx(int *a);
+extern void scib_str_rx(char *msg);
+extern void scib_num_rx(int msg[]);

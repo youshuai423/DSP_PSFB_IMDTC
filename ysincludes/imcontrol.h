@@ -30,8 +30,8 @@
   // 速度闭环
 //#define Kp_Te 2
 //#define Ki_Te 0
-#define Tecmdlimit_H 5
-#define Tecmdlimit_L -5
+#define Tecmdlimit_H 4
+#define Tecmdlimit_L -4
 
 /* speed ramp */
 #define spdramp 200  // 斜率

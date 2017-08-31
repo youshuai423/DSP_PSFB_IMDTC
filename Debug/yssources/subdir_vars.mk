@@ -4,8 +4,8 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../yssources/PSFB_IMDTC.c \
 ../yssources/imcontrol.c \
-../yssources/main.c \
 ../yssources/ysADC.c \
 ../yssources/ysCAN.c \
 ../yssources/ysDAC.c \
@@ -17,8 +17,8 @@ C_SRCS += \
 ../yssources/ysSPI.c 
 
 OBJS += \
+./yssources/PSFB_IMDTC.obj \
 ./yssources/imcontrol.obj \
-./yssources/main.obj \
 ./yssources/ysADC.obj \
 ./yssources/ysCAN.obj \
 ./yssources/ysDAC.obj \
@@ -30,8 +30,8 @@ OBJS += \
 ./yssources/ysSPI.obj 
 
 C_DEPS += \
+./yssources/PSFB_IMDTC.pp \
 ./yssources/imcontrol.pp \
-./yssources/main.pp \
 ./yssources/ysADC.pp \
 ./yssources/ysCAN.pp \
 ./yssources/ysDAC.pp \
@@ -43,8 +43,8 @@ C_DEPS += \
 ./yssources/ysSPI.pp 
 
 C_DEPS__QUOTED += \
+"yssources\PSFB_IMDTC.pp" \
 "yssources\imcontrol.pp" \
-"yssources\main.pp" \
 "yssources\ysADC.pp" \
 "yssources\ysCAN.pp" \
 "yssources\ysDAC.pp" \
@@ -56,8 +56,8 @@ C_DEPS__QUOTED += \
 "yssources\ysSPI.pp" 
 
 OBJS__QUOTED += \
+"yssources\PSFB_IMDTC.obj" \
 "yssources\imcontrol.obj" \
-"yssources\main.obj" \
 "yssources\ysADC.obj" \
 "yssources\ysCAN.obj" \
 "yssources\ysDAC.obj" \
@@ -69,8 +69,8 @@ OBJS__QUOTED += \
 "yssources\ysSPI.obj" 
 
 C_SRCS__QUOTED += \
+"../yssources/PSFB_IMDTC.c" \
 "../yssources/imcontrol.c" \
-"../yssources/main.c" \
 "../yssources/ysADC.c" \
 "../yssources/ysCAN.c" \
 "../yssources/ysDAC.c" \
